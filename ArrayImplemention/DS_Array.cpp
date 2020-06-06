@@ -16,29 +16,31 @@ Impementing inbuilt Array as DS with more features:
 
 using namespace std;
 
+
+template <typename T>
 class DS_Array
 {
 private:
 	static const unsigned int MAXSIZE=10; // Maximum size considered.
 	//int size = MAXSIZE;
 	int end=-1;  // increment for each element inserted.
-	int *A = new int[MAXSIZE]; // Allocating memory on heap and retrun address to "A".
+	T *A = new T[MAXSIZE]; // Allocating memory on heap and retrun address to "A".
 public:
 	void Init();// Initializing array.
-	void Insert(int element); // Insert element at the end.
-	void Insert(int element, int index); // Insert element at a given position.
-	int Remove(int index); // remove element at given index and return the removed element.
+	void Insert(T element); // Insert element at the end.
+	void Insert(T element, int index); // Insert element at a given position.
+	T Remove(int index); // remove element at given index and return the removed element.
 	int GetSize() const; // Get the size. It counts how many time insert method is called.
-	int GetElementAt(int index) const; // Access element at the given index.
-	void ModifyElementAt(int index, int element); // Modify the existing element. 
+	T GetElementAt(int index) const; // Access element at the given index.
+	void ModifyElementAt(int index, T element); // Modify the existing element. 
 	~DS_Array()
 	{
 		delete[] A; // Free the memeory allocated on heap.
 	}
 };
 
-
-void DS_Array::Init()
+template <typename T>
+void DS_Array<T>::Init()
 {
 	for (int i = 0; i < MAXSIZE; i++)
 	{
@@ -46,13 +48,15 @@ void DS_Array::Init()
 	}
 }
 
-void DS_Array::Insert(int element)
+template <typename T>
+void DS_Array<T>::Insert(T element)
 {
 	end++;
 	A[end] = element;
 }
 
-void DS_Array::Insert(int element, int index)
+template <typename T>
+void DS_Array<T>::Insert(T element, int index)
 {
 	if(index == end)
 	{
@@ -61,7 +65,7 @@ void DS_Array::Insert(int element, int index)
 	}
 	else
 	{
-		int B[end+1];
+		T B[end+1];
 		for(int i=0; i<end+1; i++)
 		{
 			B[i] = A[i];
@@ -89,9 +93,10 @@ void DS_Array::Insert(int element, int index)
 	}
 }
 
-int DS_Array::Remove(int index)
+template <typename T>
+T DS_Array<T>::Remove(int index)
 {
-	int element;
+	T element;
 	if(index == end)
 	{
 		end--;
@@ -100,7 +105,7 @@ int DS_Array::Remove(int index)
 	}
 	else
 	{
-		int B[end+1];
+		T B[end+1];
 		for(int i=0; i<end+1; i++)
 		{
 			B[i] = A[i];
@@ -135,13 +140,14 @@ int DS_Array::Remove(int index)
 	}
 }
 
-
-int DS_Array::GetSize() const
+template <typename T>
+int DS_Array<T>::GetSize() const
 {
 	return end+1;
 }
 
-int DS_Array::GetElementAt(int index) const
+template <typename T>
+T DS_Array<T>::GetElementAt(int index) const
 {
 	// trying to do some experimantation with exception handling. Will improve later.
 	try
@@ -159,21 +165,22 @@ int DS_Array::GetElementAt(int index) const
 	return A[index];
 }
 
-void DS_Array::ModifyElementAt(int element, int index)
+template <typename T>
+void DS_Array<T>::ModifyElementAt(int index, T element)
 {
 	A[index] = element;
 }
 
 int main()
 {
-	DS_Array a;
+	DS_Array<float> a;
 	a.Init();
 //	cout<<a.GetElementAt(2)<<endl;
 	a.Insert(1);
 	a.Insert(2);
 	a.Insert(3);
 	cout<<"size of the array: "<<a.GetSize()<<endl;
-	a.ModifyElementAt(10,1);
+	a.ModifyElementAt(1,10);
 //	a.Insert(3,0);
 //	a.Insert(10, 2);
 //	cout<<"removed : "<<a.Remove(1)<<endl;
