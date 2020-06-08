@@ -31,9 +31,12 @@ class LinkedList
 public:
 	void InsertAtEnd(int data); // Inserting elements at the end of the list.
 	void InsertAtBeginning(int data); // Inserting elements at beginning of the list
-	int GetSize() const; // counts how many time insert method called.
+	void InsertAtIndex(int data, int index); // Inserting elements at particular index
+	int  Remove(int index); // Remove element at particular index
+	int  GetSize() const; // counts how many time insert method called.
 	void Print() const; // Print elements of the list.
 	void FreeMemory(); // Free the memory, allocated dynamically.
+	void IterativeReverse(); // Reverse the list iteratively.
 
 	~LinkedList()
 	{
@@ -80,6 +83,59 @@ void LinkedList::InsertAtBeginning(int data)
 	}
 }
 
+void LinkedList::InsertAtIndex(int data, int index)
+{
+	size++;
+	Node *temp1 = new Node();
+	temp1->data = data;
+	temp1->next = nullptr;
+	if(index == 1)
+	{
+		temp1->next = head;
+		head = temp1;
+	}
+	else
+	{
+		Node *temp2 = head;
+		for(int i=1; i<index-1 ;i++)
+		{
+			temp2 = temp2->next;
+		}
+		temp1->next = temp2->next;
+		temp2->next = temp1;
+	}
+
+}
+
+int LinkedList::Remove(int index)
+{
+	//current is the pointer to the node to be removed.
+	int data;
+	if (index == 1)
+	{
+		Node *current = head;
+		head = current->next;
+		data = current->data;
+		delete current;
+		return data;
+	}
+	else 
+	{
+		Node* prev = head;
+		Node *current = nullptr;
+		for(int i=1; i<index-1; i++)
+		{
+			prev = prev->next;
+		}
+		current = prev->next;
+		prev->next = current->next;
+		data = current->data;
+		delete current;
+		return data;
+	}
+
+}
+
 int LinkedList::GetSize() const
 {
 	return size;
@@ -97,6 +153,21 @@ void LinkedList::Print() const
 	cout<<endl;
 }
 
+
+void LinkedList::IterativeReverse()
+{
+	Node *current = head;
+	Node *next, *prev;
+	prev = nullptr;
+	while (current != nullptr)
+	{
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
+	}
+	head = prev;
+}
 
 void LinkedList::FreeMemory()
 {
@@ -120,6 +191,13 @@ int main()
 	l.InsertAtBeginning(2);
 	l.InsertAtBeginning(3);
 	l.InsertAtBeginning(4);
+	l.InsertAtBeginning(10);
+	l.InsertAtIndex(100,5);
+	l.Print();
+//	cout<<"element removed from list: "<<l.Remove(5)<<endl;
+//	cout<<"element removed from list: "<<l.Remove(1)<<endl;
+
+	l.IterativeReverse();
 	l.Print();
 	cout<<"size of the LinkedList: "<<l.GetSize()<<endl;
 }
